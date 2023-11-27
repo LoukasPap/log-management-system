@@ -8,5 +8,5 @@ def getLogRecords(n: int):
             SELECT * FROM LogRecord LIMIT %s;
             """
         , (str(n), ))
-        print('Got em')
+        print('Works')
         return db.cursor.fetchall()
