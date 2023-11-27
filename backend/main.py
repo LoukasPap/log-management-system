@@ -1,8 +1,10 @@
 from fastapi import FastAPI
+from queries import getLogRecords
 
 app = FastAPI()
 
 
 @app.get("/")
 async def root():
-    return {"msg":"Hello World!"}
+    results = getLogRecords(3)
+    return {"msg": results}
