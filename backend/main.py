@@ -2,30 +2,49 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from queries import *
 
+
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+    "localhost:3000"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-@app.get("/", response_class=HTMLResponse)
-async def root(request: Request):
+@app.get("/")
+async def root():
     results = get_log_records(5)
-    return templates.TemplateResponse("index.html", {"request": request, "result":results})
+    return {"data" : results}
 
 
 @app.get("/query1")
 async def query1(start_date: str, end_date: str):
     results = lp_type_ranged(start_date, end_date)
-    return {"msg" : results}
+    formated_results = [{"type":i[0], "logs":i[1]} for i in results]
+
+    return {"data" : formated_results}
 
 
 @app.get("/query2")
 async def query2(start_date: str, end_date: str, type: str):
     results = lp_day_specified_type_ranged(start_date, end_date, type)
-    return {"msg" : results}
+    formated_results = [{"day":i[0], "logs":i[1]} for i in results]
+    
+    return {"data" : formated_results}
 
 
 @app.get("/query3")

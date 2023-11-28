@@ -3,7 +3,7 @@
 This is the first project for the MSc course  __Database Management System (M149)__ of the winter semester.
 
 ## Back-end
-Inside the _backend/ folder_:
+Inside the _backend/_ directory:
 
 
 To activate virtual environment:
@@ -24,3 +24,14 @@ export DB_USERNAME=<username>
 export DB_PASSWORD=<password>
 export DB_NAME=LogDB
 ```
+
+## Front-end
+
+In the _frontend/_ directory:
+
+To run the app in development mode:
+```bash
+$ npm run start
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
