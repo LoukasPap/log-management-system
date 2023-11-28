@@ -1,68 +1,70 @@
 // Sidebar.js
 import React from 'react';
-import { Box, VStack, Heading, Flex, Text, IconButton, useColorMode } from '@chakra-ui/react';
+import { Box, VStack, Heading, Flex, Text, Button, useColorMode } from '@chakra-ui/react';
+
+const MenuItem = ({ label, isSelected, onClick }) => {
+    return (
+      <Button
+        variant="ghost"
+        colorScheme={isSelected ? 'white' : 'white'}
+        bg={isSelected ? 'orange.400' : 'transparent'}
+        onClick={onClick}
+        width="100%"
+        textAlign="right"
+        borderRadius="5"
+      >
+        {label}
+      </Button>
+    );
+  };
 
 const Sidebar = ({ onMenuClick }) => {
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const menuItems = [
+    { label: 'Query 1', key: 'Query 1' },
+    { label: 'Query 2', key: 'Query 2' },
+    { label: 'Query 3', key: 'Query 3' },
+    { label: 'Query 4', key: 'Query 4' },
+    { label: 'Query 5', key: 'Query 5' },
+    { label: 'Query 6', key: 'Query 6' },
+    { label: 'Query 7', key: 'Query 7' },
+    { label: 'Query 8', key: 'Query 8' },
+    { label: 'Query 9', key: 'Query 9' },
+    { label: 'Query 10', key: 'Query 10' },
+    { label: 'Query 11', key: 'Query 11' },
+    { label: 'Query 12', key: 'Query 12' },
+    { label: 'Query 13', key: 'Query 13' },
+  ];
+
+  const [selectedMenu, setSelectedMenu] = React.useState('');
+  const handleMenuClick = (menuKey) => {
+    setSelectedMenu(menuKey);
+    onMenuClick(menuKey);
+  };
+
   return (
     <Box
-      as="nav"
-      pos="fixed"
-      left="0"
-      top="0"
-      h="100%"
-      w="150px"
-      bg="blue.500"
-      color="white"
-      p="4"
-      zIndex="1000"
-    >
+      as="nav" pos="fixed" left="0" top="0" h="100%"
+      w="150px" bg="blue.500" color="white" p="4" zIndex="1000">
+
       <VStack spacing="4" align="end">
         {/* Header inside the Sidebar */}
         <Heading mb='3' align="right" as="h1" size="md">Log <br/>Management System</Heading>
 
-        {/* Sidebar options */}
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 1')}>
-            Query 1
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 2')}>
-            Query 2
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 3')}>
-            Query 3
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 4')}>
-            Query 4
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 5')}>
-            Query 5
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 6')}>
-            Query 6
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 7')}>
-            Query 7
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 8')}>
-            Query 8
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 9')}>
-            Query 9
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 10')}>
-            Query 10
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 11')}>
-            Query 11
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 12')}>
-            Query 12
-        </Text>
-        <Text fontSize="xl" cursor="pointer" onClick={() => onMenuClick('Query 13')}>
-            Query 13
-        </Text>
+        {menuItems.map((menuItem) => (
+            <MenuItem
+            fontSize="xl"
+            align="right"
+            as="h1"
+            key={menuItem.key}
+            label={menuItem.label}
+            isSelected={selectedMenu === menuItem.key}
+            onClick={() => handleMenuClick(menuItem.key)}
+            />
+        ))}
       </VStack>
+
     </Box>
   );
 };

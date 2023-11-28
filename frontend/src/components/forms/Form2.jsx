@@ -1,7 +1,8 @@
 // Form2.js
 import React, { useState } from 'react';
-import DateForm from './DateForm';
-import { Input, VStack } from '@chakra-ui/react';
+import TimeRangeForm from './TimeRangeForm';
+import { Input, VStack, Text } from '@chakra-ui/react';
+
 
 const Form2 = ({ onDataFetch }) => {
   const [additionalText, setAdditionalText] = useState('');
@@ -22,17 +23,19 @@ const Form2 = ({ onDataFetch }) => {
 
   return (
     <div>
-      <h1>Find the total logs per day for a specific action type and time range</h1>
+      <Text maxW="md" mt="5" fontSize="xl" color="black">
+        Find the total logs per day for a specific action type and time range
+      </Text>
 
-      <VStack spacing="4" align="start">
-
+      <VStack mb="5" spacing="4" align="start">
+        <Text mt="5" fontSize="lg" fontWeight="bold">Action</Text>
         <Input
           type="text"
-          placeholder="Action type"
+          placeholder="Action Type"
           onChange={(e) => setAdditionalText(e.target.value)}
         />
-        <DateForm onSubmit={handleDataFetch} />
       </VStack>
+      <TimeRangeForm onSubmit={handleDataFetch} />
     </div>
   );
 };

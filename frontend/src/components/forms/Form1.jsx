@@ -1,13 +1,17 @@
 // Form1.js
 import React from 'react';
-import DateForm from './DateForm';
+import { Text } from '@chakra-ui/react';
+import TimeRangeForm from './TimeRangeForm';
 
-const Form1 = ({ onDataFetch }) => {
+const Form1 = ({ onDataFetch, which_query }) => {
   const handleDataFetch = async (data) => {
-    // Assuming the API response is in the expected format
+    
+    
     try {
+      console.log("here")
+      console.log(which_query)
       // const response = await fetch(`http://localhost:8000/query1?start_date=${data.sd}&end_date=${data.ed}`);
-      const response = await fetch(`http://127.0.0.1:8001/query1?start_date=2005-10-20%2022:24:46&end_date=2009-12-20%2022:24:48`);
+        const response = await fetch(`http://127.0.0.1:8001/query`+which_query+`?start_date=2004-10-20 22:24:46&end_date=2009-12-20 22:24:48`);
 
       const responseData = await response.json();
       // Pass the fetched data to the parent component
@@ -19,10 +23,19 @@ const Form1 = ({ onDataFetch }) => {
 
   return (
     <div>
-      <h2>Find the total logs per type that were created<br/>within a specified time range and sort them in 
-      a descending order</h2>
+      { which_query=="1" ? (
+      <Text maxW="md" mt="5" fontSize="xl" color="black">
+        Find the total logs per type that were created within a specified time range and sort them in 
+        a descending order
+        </Text>
+        ) : (
+          <Text maxW="md" mt="5" fontSize="xl" color="black">
+          Find the top-5 Block IDs with regards to total number of actions per day for a specific date
+          range (for types that Block ID is available)
+          </Text>
+        )}
       <br/>
-      <DateForm onSubmit={handleDataFetch} />
+      <TimeRangeForm onSubmit={handleDataFetch} />
     </div>
   );
 };

@@ -50,31 +50,54 @@ async def query2(start_date: str, end_date: str, type: str):
 @app.get("/query3")
 async def query3(day: str):
     results = top_lp_src_day(day)
-    return {"msg" : results}
+    formated_results = [{"source_ip":i[0], "Most common log":i[1]} for i in results]
+
+    return {"data" : formated_results}
 
 
 @app.get("/query4")
 async def query4(start_date: str, end_date: str):
     results = action_based_top5_blocks_ranged(start_date, end_date)
-    return {"msg" : results}
+    formated_results = [{"Block_id":i[0], "Total Actions":i[1]} for i in results]
+
+    return {"data" : formated_results}
 
 
 @app.get("/query5")
 async def query5():
     results = referers_with_at_least_2_resources()
-    return {"msg" : results}
+    formated_results = [{"Referer":i[0]} for i in results]
+
+    return {"data" : formated_results}
 
 
 @app.get("/query6")
 async def query6():
     results = second_most_common_resource()
-    return {"msg" : results}
+    formated_results = [{"Second most common":results[0][0]}]
+    print(formated_results)
+
+    return {"data" : formated_results}
 
 
 @app.get("/query7")
 async def query7(size: int):
     results = access_logs_with_size_less_than(size)
-    return {"msg" : results}
+    formated_results = [{
+        "source_ip":i[0],
+        "remote name":i[2],
+        "user_id":i[3],
+        "timestamp":i[4],
+        "http method":i[5],
+        "http response status":i[6],
+        "http response size":i[7],
+        "referer":i[9],
+        "user agent string":i[9],
+    } for i in results]
+
+    return {"data" : formated_results}
+
+    # print(formated_results)
 
 
 @app.get("/query8")
