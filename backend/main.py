@@ -41,38 +41,54 @@ async def query4(start_date: str, end_date: str):
 
 
 @app.get("/query5")
-async def query5(request: Request):
+async def query5():
     results = referers_with_at_least_2_resources()
     return {"msg" : results}
 
+
 @app.get("/query6")
-async def query6(request: Request):
-    return {"query":"query"}
+async def query6():
+    results = second_most_common_resource()
+    return {"msg" : results}
+
 
 @app.get("/query7")
-async def query7(request: Request):
-    return {"query":"query"}
+async def query7(size: int):
+    results = access_logs_with_size_less_than(size)
+    return {"msg" : results}
+
 
 @app.get("/query8")
-async def query8(request: Request):
-    return {"query":"query"}
+async def query8():
+    results = blocks_replicated_served_same_day()
+    return {"msg" : results}
+
 
 @app.get("/query9")
-async def query9(request: Request):
-    return {"query":"query"}
+async def query9():
+    results = blocks_replicated_served_same_day_hour()
+    return {"msg" : results}
+
 
 @app.get("/query10")
-async def query10(request: Request):
-    return {"query":"query"}
+async def query10():
+    results = access_logs_with_firefox_version()
+    return {"msg" : results}
+
 
 @app.get("/query11")
-async def query11(request: Request):
-    return {"query":"query"}
+async def query11(start_date: str, end_date: str, http_method: str):
+    results = ips_with_1_httpmethod_ranged(start_date, end_date, http_method)
+    return {"msg" : results}
+
 
 @app.get("/query12")
-async def query12(request: Request):
-    return {"query":"query"}
+async def query12(start_date: str, end_date: str, http_method1: str, http_method2: str):
+    results = ips_with_2_httpmethods_ranged(start_date, end_date, http_method1, http_method2)
+    return {"msg" : results}
+
 
 @app.get("/query13")
-async def query13(request: Request):
-    return {"query":"query"}
+async def query13(start_date: str, end_date: str):
+    results = ips_with_any_4_httpmethods_ranged(start_date, end_date)
+    return {"msg" : results}
