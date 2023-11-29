@@ -39,11 +39,17 @@ const Form1 = ({ onDataFetch, which_query }) => {
         Find the total logs per type that were created within a specified time range and sort them in 
         a descending order 📄
       </Text>
-      ) : (
+
+      ) ? which_query=="4" : (
         <Text maxW="md" mt="5" fontSize="xl" color="black">
         Find the top-5 Block IDs with regards to total number of actions per day for a specific date
         range (for types that Block ID is available) 🔝
         </Text>
+
+      ) : (
+        <Text maxW="md" mt="5" fontSize="xl" color="black">
+          🍀 Find IPs that have issued any four distinct HTTP methods on a particular time range
+        </Text>   
       )}
       <br/>
       <TimeRangeForm

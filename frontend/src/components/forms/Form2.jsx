@@ -18,8 +18,6 @@ const Form2 = ({ onDataFetch }) => {
     setLoading(true);
 
     try {
-      console.log("hi|" + startDate, endDate, action)
-
       const response = await fetch(`http://localhost:8001/query2?start_date=2002-10-20%2022:24:46&end_date=2013-11-09%2021:20:55&type=ACCESS`);
       // const response = await fetch(`http://127.0.0.1:8000/query2?start=startDate&end=endDate&type=action`);
       

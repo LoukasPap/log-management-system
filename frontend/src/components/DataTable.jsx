@@ -52,27 +52,33 @@ const DataTable = ({ data, currentPage, setCurrentPage  }) => {
         <Button mt="0" ml="4" onClick={handleNextPage} disabled={paginatedData.length < itemsPerPage}>
             Next
         </Button>
+        
         <Text ml="2" mt="2" mb="2" fontSize="sm" color="gray.500">
             Showing {startIndex}-{endIndex} of {data.data.length}
         </Text>
-        <Table variant="simple">
-        <Thead>
-            <Tr>
-            {columns.map((column, index) => (
-                <Th key={index}>{column}</Th>
-            ))}
-            </Tr>
-        </Thead>
-        <Tbody>
-            {paginatedData.map((item, rowIndex) => (
-            <Tr key={rowIndex}>
-                {columns.map((column, colIndex) => (
-                <Td key={colIndex}>{item[column]}</Td>
+
+        {paginatedData.length == 0 ? (
+            <Text>No results to display.</Text>
+        ) : ( 
+            <Table variant="striped">
+            <Thead>
+                <Tr>
+                {columns.map((column, index) => (
+                    <Th key={index}>{column}</Th>
                 ))}
-            </Tr>
-            ))}
-        </Tbody>
-        </Table>
+                </Tr>
+            </Thead>
+            <Tbody>
+                {paginatedData.map((item, rowIndex) => (
+                <Tr key={rowIndex}>
+                    {columns.map((column, colIndex) => (
+                    <Td key={colIndex}>{item[column]}</Td>
+                    ))}
+                </Tr>
+                ))}
+            </Tbody>
+            </Table>
+        )}
     </div>
   );
 };

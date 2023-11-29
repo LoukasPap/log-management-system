@@ -6,10 +6,12 @@ import Sidebar from "./components/Sidebar";
 import Form1 from './components/forms/Form1';
 import Form2 from './components/forms/Form2';
 import Form3 from './components/forms/Form3';
+import Form4 from "./components/forms/Form4";
+import Form11 from './components/forms/FormQ11';
+import Form12 from './components/forms/FormQ12';
 import EmptyForm from './components/forms/EmptyForm';
 
 import DataTable from './components/DataTable';
-import Form4 from "./components/forms/Form4";
 
 function App() {
   const [selectedMenu, setSelectedMenu] = useState('');
@@ -18,12 +20,10 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  console.log('api data')
   console.log(apiData)
 
 
-
-  const handleMenuClick = async (menuOption, which_query) => {
+  const handleMenuClick = async (menuOption, whichQuery) => {
     setApiData([]);
     setCurrentPage(1);
     setSelectedMenu(menuOption);
@@ -38,34 +38,34 @@ function App() {
         setFormComponent(<Form2 onDataFetch={setApiData} />);
         break;
       case 'Query 3':
-        setFormComponent(<Form3 onDataFetch={setApiData} which_query={'3'}  />);
+        setFormComponent(<Form3 onDataFetch={setApiData} whichQuery={'3'} />);
         break;
       case 'Query 4':
-        setFormComponent(<Form1 onDataFetch={setApiData} which_query={'4'} />);
+        setFormComponent(<Form1 onDataFetch={setApiData} whichQuery={'4'} />);
         break;
       case 'Query 5':
-        setFormComponent(<EmptyForm onDataFetch={setApiData} which_query={'5'} />);
+        setFormComponent(<EmptyForm onDataFetch={setApiData} whichQuery={'5'} />);
         break;
       case 'Query 6':
-        setFormComponent(<EmptyForm onDataFetch={setApiData} which_query={'6'}/>);
+        setFormComponent(<EmptyForm onDataFetch={setApiData} whichQuery={'6'} />);
         break;
       case 'Query 7':
-        setFormComponent(<Form4 onDataFetch={setApiData} which_query={'7'} />);
+        setFormComponent(<Form4 onDataFetch={setApiData} whichQuery={'7'} />);
         break;
       case 'Query 8':
-        setFormComponent(<EmptyForm onDataFetch={setApiData} which_query={'8'} />);
+        setFormComponent(<EmptyForm onDataFetch={setApiData} whichQuery={'8'} />);
         break;
       case 'Query 9':          
-        setFormComponent(<EmptyForm onDataFetch={setApiData} which_query={'9'}/>);
+        setFormComponent(<EmptyForm onDataFetch={setApiData} whichQuery={'9'} />);
         break;
       case 'Query 10':            
-        setFormComponent(<Form1 onDataFetch={setApiData} />);
+        setFormComponent(<EmptyForm onDataFetch={setApiData} whichQuery={'10'} />);
         break;
       case 'Query 11':
-        setFormComponent(<Form2 onDataFetch={setApiData} />);
+        setFormComponent(<Form11 onDataFetch={setApiData} whichQuery={'11'} />);
         break;
       case 'Query 12':
-        setFormComponent(<Form2 onDataFetch={setApiData} />);
+        setFormComponent(<Form12 onDataFetch={setApiData} whichQuery={'12'} />);
         break;
       case 'Query 13':
         setFormComponent(<Form1 onDataFetch={setApiData} />);

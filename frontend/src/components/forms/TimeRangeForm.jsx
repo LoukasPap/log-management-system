@@ -47,7 +47,7 @@ const TimeRangeForm = ({ startDate, endDate, onStartDateChange, onEndDateChange 
     //   <Button onClick={handleSubmit}>Fetch Data</Button>
     // </VStack>
 
-    <VStack spacing="4" align="start">
+    <VStack spacing="4" mt="5" align="start">
       <Text fontSize="lg" fontWeight="bold">Date Range</Text>
       <Input
         type="text"
