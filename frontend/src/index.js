@@ -53,10 +53,10 @@ function App() {
         setFormComponent(<Form4 onDataFetch={setApiData} which_query={'7'} />);
         break;
       case 'Query 8':
-        setFormComponent(<Form2 onDataFetch={setApiData} />);
+        setFormComponent(<EmptyForm onDataFetch={setApiData} which_query={'8'} />);
         break;
       case 'Query 9':          
-        setFormComponent(<Form2 onDataFetch={setApiData} />);
+        setFormComponent(<EmptyForm onDataFetch={setApiData} which_query={'9'}/>);
         break;
       case 'Query 10':            
         setFormComponent(<Form1 onDataFetch={setApiData} />);
@@ -73,15 +73,23 @@ function App() {
       default:
         setFormComponent(null);
     }
+  }
 
+  const handleDataFetch = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setLoading(false); // Set loading to false after the data fetch is complete
+      // Perform your actual data fetch here
+      // For example:
+      // const fetchedData = await fetchDataFunction(data);
+  
+      // Set the fetched data
+      // setApiData(fetchedData);
     } catch (error) {
       console.error('Error fetching data:', error);
-      setLoading(false); // Ensure loading is set to false even if there's an error
+    } finally {
+      // Set loading to false after the data fetch is complete
+      setLoading(false);
     }
-  }
+  };
 
   return (
     

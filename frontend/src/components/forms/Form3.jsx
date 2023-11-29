@@ -1,23 +1,27 @@
 // Form1.js
-import React from 'react';
-import { Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Text, Button, Spinner } from '@chakra-ui/react';
 import DateForm from './DateForm';
 
 const Form1 = ({ onDataFetch, which_query }) => {
+  const [loading, setLoading] = useState(false);
+  const [day, setDay] = useState('');
+
+
   const handleDataFetch = async (data) => {
-    
+    setLoading(true)
     
     try {
-      console.log("here")
-      console.log(data.sd)
-      // const response = await fetch(`http://localhost:8001/query3?day=${data.sd}`);
+      console.log("here"+day)
+      // const response = await fetch(`http://localhost:8001/query3?day=day`);
       const response = await fetch(`http://127.0.0.1:8001/query3?day=2005-10-20`);
 
-      const responseData = await response.json();
-
-      onDataFetch(responseData);
+      const fetchedData = await response.json();
+      onDataFetch(fetchedData);
     } catch (error) {
       console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -27,7 +31,14 @@ const Form1 = ({ onDataFetch, which_query }) => {
         Find the most common log per source IP for a specific day
       </Text>
       <br/>
-      <DateForm onSubmit={handleDataFetch} />
+      <DateForm
+        day={day}
+        onDayChange={(day) => setDay(day)}
+      />
+      
+      <Button mt="5" colorScheme="whatsapp" onClick={handleDataFetch}>
+        Fetch {loading && <Spinner ml="3" size="sm" />}
+      </Button>
     </div>
   );
 };

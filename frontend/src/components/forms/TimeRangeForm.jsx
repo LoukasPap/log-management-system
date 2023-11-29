@@ -13,21 +13,8 @@ const formatDate = (date) => {
     return `${year}${month}${day} ${hours}${minutes}${seconds}`;
   };
 
-const DateForm = ({ onSubmit }) => {
-    const [startDate, setStartDate] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [endTime, setEndTime] = useState('');
+const TimeRangeForm = ({ startDate, endDate, onStartDateChange, onEndDateChange }) => {
 
-  const handleSubmit = async () => {
-    try {
-        const formattedStartDate = startDate+' '+startTime
-        const formattedEndDate = endDate+' '+endTime
-        onSubmit({ sd: formattedStartDate, ed: formattedEndDate });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
 
   return (
     // <VStack spacing="4" align="start">
@@ -66,19 +53,16 @@ const DateForm = ({ onSubmit }) => {
         type="text"
         placeholder="Start Date (YYYY-MM-DD HH:MM:SS)"
         value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
+        onChange={(e) => onStartDateChange(e.target.value)}
       />
       <Input
         type="text"
         placeholder="End Date (YYYY-MM-DD HH:MM:SS)"
         value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
+        onChange={(e) => onEndDateChange(e.target.value)}
       />
-      <Button colorScheme="whatsapp" onClick={handleSubmit}>
-        Fetch
-      </Button>
     </VStack>
   );
 };
 
-export default DateForm;
+export default TimeRangeForm;

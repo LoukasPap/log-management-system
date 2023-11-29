@@ -5,17 +5,11 @@ import { Table, Thead, Tbody, Tr, Th, Td, Button, Text, Spinner } from '@chakra-
 const DataTable = ({ data, currentPage, setCurrentPage  }) => {
   const itemsPerPage = 30;
   const [paginatedData, setPaginatedData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-// Simulate an asynchronous data fetch with a timeout
     const fetchData = async () => {
     
-    setLoading(true);
-    // Simulate fetching data from the API after 1.5 seconds
         try {
-            await new Promise((resolve) => setTimeout(resolve, 100));
-
             if (Array.isArray(data.data) && data.data.length > 0 && typeof data.data[0] === 'object') {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
@@ -28,8 +22,6 @@ const DataTable = ({ data, currentPage, setCurrentPage  }) => {
 
         } catch (error) {
             console.error('Error fetching data:', error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -54,38 +46,33 @@ const DataTable = ({ data, currentPage, setCurrentPage  }) => {
 
   return (
     <div>
-        <Button mt="2" onClick={handlePrevPage} disabled={currentPage === 1}>
+        <Button mt="0" onClick={handlePrevPage} disabled={currentPage === 1}>
             Previous
         </Button>
-        <Button ml="4" onClick={handleNextPage} disabled={paginatedData.length < itemsPerPage}>
+        <Button mt="0" ml="4" onClick={handleNextPage} disabled={paginatedData.length < itemsPerPage}>
             Next
         </Button>
         <Text ml="2" mt="2" mb="2" fontSize="sm" color="gray.500">
             Showing {startIndex}-{endIndex} of {data.data.length}
         </Text>
-        {loading ? (
-            <Spinner size="lg" />
-        ) : (
-            <Table variant="simple">
-            <Thead>
-                <Tr>
-                {columns.map((column, index) => (
-                    <Th key={index}>{column}</Th>
+        <Table variant="simple">
+        <Thead>
+            <Tr>
+            {columns.map((column, index) => (
+                <Th key={index}>{column}</Th>
+            ))}
+            </Tr>
+        </Thead>
+        <Tbody>
+            {paginatedData.map((item, rowIndex) => (
+            <Tr key={rowIndex}>
+                {columns.map((column, colIndex) => (
+                <Td key={colIndex}>{item[column]}</Td>
                 ))}
-                </Tr>
-            </Thead>
-            <Tbody>
-                {paginatedData.map((item, rowIndex) => (
-                <Tr key={rowIndex}>
-                    {columns.map((column, colIndex) => (
-                    <Td key={colIndex}>{item[column]}</Td>
-                    ))}
-                </Tr>
-                ))}
-            </Tbody>
-            </Table>
-        )}
-
+            </Tr>
+            ))}
+        </Tbody>
+        </Table>
     </div>
   );
 };

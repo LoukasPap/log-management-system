@@ -75,7 +75,6 @@ async def query5():
 async def query6():
     results = second_most_common_resource()
     formated_results = [{"Second most common":results[0][0]}]
-    print(formated_results)
 
     return {"data" : formated_results}
 
@@ -84,33 +83,34 @@ async def query6():
 async def query7(size: int):
     results = access_logs_with_size_less_than(size)
     formated_results = [{
-        "source_ip":i[0],
-        "remote name":i[2],
-        "user_id":i[3],
-        "timestamp":i[4],
-        "http method":i[5],
-        "http response status":i[6],
-        "http response size":i[7],
-        "referer":i[9],
-        "user agent string":i[9],
+        "source_ip" : i[0],
+        "remote name" : i[1],
+        "user_id" : i[2],
+        "timestamp" : i[3],
+        "http method" : i[4],
+        "http response status" : i[5],
+        "http response size" : i[6],
+        "referer" : i[7],
+        "user agent string" : i[8],
     } for i in results]
 
     return {"data" : formated_results}
-
-    # print(formated_results)
 
 
 @app.get("/query8")
 async def query8():
     results = blocks_replicated_served_same_day()
-    return {"msg" : results}
+    formated_results = [{"Block_id":i[0]} for i in results]
+
+    return {"data" : formated_results}
 
 
 @app.get("/query9")
 async def query9():
     results = blocks_replicated_served_same_day_hour()
-    return {"msg" : results}
+    formated_results = [{"Block_id":i[0]} for i in results]
 
+    return {"data" : formated_results}
 
 @app.get("/query10")
 async def query10():
