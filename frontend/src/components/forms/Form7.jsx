@@ -1,8 +1,7 @@
-// Form1.js
 import React, { useState } from 'react';
 import { Text, Button, Input, Spinner } from '@chakra-ui/react';
 
-const Form1 = ({ onDataFetch, which_query }) => {
+const Form7 = ({ onDataFetch, which_query }) => {
   const [loading, setLoading] = useState(false);
   const [size, setSize] = useState('');
   
@@ -11,9 +10,12 @@ const Form1 = ({ onDataFetch, which_query }) => {
     setLoading(true);
   
     try {
-      console.log(size)
-      // const response = await fetch(`http://localhost:8001/query7?size=size`);
-      const response = await fetch(`http://localhost:8001/query7?size=300`);
+      const response = await fetch(`${window.myGlobalVariable}query7?size=${size}`,
+      {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token')).access_token}`,
+        },
+      });
 
       const responseData = await response.json();
 
@@ -30,7 +32,7 @@ const Form1 = ({ onDataFetch, which_query }) => {
       <Text maxW="md" mt="5" fontSize="xl" color="black">
         🔢 Find the access log (all fields) where the size is less than a specified number
       </Text>
-      <Text mt="5" fontSize="lg" fontWeight="bold">Size</Text>
+      <Text ml="1" mt="3" fontSize="lg" fontWeight="bold">Size</Text>
       <Input
         mt="2"
         type="number"
@@ -46,4 +48,4 @@ const Form1 = ({ onDataFetch, which_query }) => {
   );
 };
 
-export default Form1;
+export default Form7;

@@ -1,4 +1,3 @@
-// Form1.js
 import React, { useState } from 'react';
 import { Text, Spinner, Button } from '@chakra-ui/react';
 import TimeRangeForm from './TimeRangeForm';
@@ -14,13 +13,16 @@ const Form1 = ({ onDataFetch, whichQuery }) => {
     setLoading(true);
     
     try {
-      console.log("hi|" + startDate, endDate, whichQuery)
       
-      const formattedStartDate = startDate+' '+startTime
-      const formattedEndDate = endDate+' '+endTime
+      const formattedStartDate = startDate + " " + startTime
+      const formattedEndDate = endDate + " " + endTime
       
-      // const response = await fetch(`http://localhost:8001/query1?start_date=formattedStartDate&end_date=formattedEndDate`);
-      const response = await fetch(`http://localhost:8000/query`+whichQuery+`?start_date=2004-10-20 22:24:46&end_date=2009-12-20 22:24:48`);
+      const response = await fetch(`${window.myGlobalVariable}query${whichQuery}?start_date=${formattedStartDate}&end_date=${formattedEndDate}`,
+      {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token')).access_token}`,
+        },
+      });
 
       const fetchedData  = await response.json();
       onDataFetch(fetchedData);
@@ -50,12 +52,14 @@ const Form1 = ({ onDataFetch, whichQuery }) => {
           🍀 Find IPs that have issued any four distinct HTTP methods on a particular time range
         </Text>
       )}
-      <br/>
+
       <TimeRangeForm
           startDate={startDate}
           endDate={endDate}
           onStartDateChange={(date) => setStartDate(date)}
           onEndDateChange={(date) => setEndDate(date)}
+          onStartTimeChange={(date) => setStartTime(date)}
+          onEndTimeChange={(date) => setEndTime(date)}
         />
       <Button mt="5" colorScheme="whatsapp" onClick={handleDataFetch}>
         Fetch {loading && <Spinner ml="3" size="sm" />}

@@ -1,4 +1,3 @@
-// Form1.js
 import React, { useState } from 'react';
 import { Text, Button, Spinner } from '@chakra-ui/react';
 
@@ -9,9 +8,14 @@ const EmptyForm = ({ onDataFetch, whichQuery }) => {
     setLoading(true);
 
     try {
-      console.log(whichQuery)
 
-      const response = await fetch(`http://localhost:8001/query`+whichQuery);
+      const response = await fetch(`${window.myGlobalVariable}query${whichQuery}`,
+      {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token')).access_token}`,
+        },
+      });
+
       const fetchedData = await response.json();
 
       onDataFetch(fetchedData);

@@ -1,6 +1,3 @@
-
-
-// components/LoginForm.jsx
 import React, { useState } from 'react';
 import { Text, Input, Button, VStack, Link } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -26,8 +23,8 @@ const RegisterForm = () => {
       }
     console.log(JSON.stringify(userInput))
 
-    // await login(username, password);
-    const results = await fetch(`http://localhost:8001/register`, {
+
+    const results = await fetch(`http://localhost:8000/register`, {
         method: 'POST',
         mode: 'cors',
         headers: { "Content-Type": "application/json" },

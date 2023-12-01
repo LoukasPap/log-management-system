@@ -1,7 +1,6 @@
-// Form2.js
 import React, { useState } from 'react';
 import TimeRangeForm from './TimeRangeForm';
-import { Input, VStack, Text, Button, Spinner } from '@chakra-ui/react';
+import { VStack, Text, Button, Spinner, Select } from '@chakra-ui/react';
 
 
 const Form2 = ({ onDataFetch }) => {
@@ -10,7 +9,6 @@ const Form2 = ({ onDataFetch }) => {
   const [startTime, setStartTime] = useState('');
   const [endDate, setEndDate] = useState('');
   const [endTime, setEndTime] = useState('');
-
   const [action, setAction] = useState('');
 
 
@@ -18,9 +16,17 @@ const Form2 = ({ onDataFetch }) => {
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8001/query2?start_date=2002-10-20%2022:24:46&end_date=2013-11-09%2021:20:55&type=ACCESS`);
-      // const response = await fetch(`http://127.0.0.1:8000/query2?start=startDate&end=endDate&type=action`);
+
+      const formattedStartDate = startDate+' '+startTime
+      const formattedEndDate = endDate+' '+endTime
       
+      const response = await fetch(`${window.myGlobalVariable}query2?start_date=${formattedStartDate}&end_date=${formattedEndDate}&type=${action}`,
+      {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token')).access_token}`,
+        },
+      });
+            
       const fetchedData = await response.json();
       onDataFetch(fetchedData);
     } catch (error) {
@@ -38,11 +44,19 @@ const Form2 = ({ onDataFetch }) => {
 
       <VStack mb="5" spacing="4" align="start">
         <Text mt="5" fontSize="lg" fontWeight="bold">Action</Text>
-        <Input
-          type="text"
-          placeholder="Action Type"
+        <Select
+          placeholder="-"
+          defaultValue={"ACCESS"}
+          value={action}
           onChange={(e) => setAction(e.target.value)}
-        />
+          >
+          <option value="ACCESS">ACCESS</option>
+          <option value="RECEIVED">RECEIVED</option>
+          <option value="RECEIVING">RECEIVING</option>
+          <option value="SERVED">SERVED</option>
+          <option value="REPLICATE">REPLICATE</option>
+          <option value="DELETE">DELETE</option>
+        </Select>
       </VStack>
       
       <TimeRangeForm
@@ -50,6 +64,8 @@ const Form2 = ({ onDataFetch }) => {
           endDate={endDate}
           onStartDateChange={(date) => setStartDate(date)}
           onEndDateChange={(date) => setEndDate(date)}
+          onStartTimeChange={(date) => setStartTime(date)}
+          onEndTimeChange={(date) => setEndTime(date)}
         />
       
       <Button mt="5" colorScheme="whatsapp" onClick={handleDataFetch}>

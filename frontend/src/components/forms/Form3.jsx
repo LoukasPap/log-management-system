@@ -1,20 +1,22 @@
-// Form1.js
 import React, { useState } from 'react';
 import { Text, Button, Spinner } from '@chakra-ui/react';
 import DateForm from './DateForm';
 
-const Form1 = ({ onDataFetch, which_query }) => {
+const Form1 = ({ onDataFetch }) => {
   const [loading, setLoading] = useState(false);
   const [day, setDay] = useState('');
-
 
   const handleDataFetch = async (data) => {
     setLoading(true)
     
     try {
-      console.log("here"+day)
-      // const response = await fetch(`http://localhost:8001/query3?day=day`);
-      const response = await fetch(`http://127.0.0.1:8001/query3?day=2005-10-20`);
+      
+      const response = await fetch(`${window.myGlobalVariable}query3?day=${day}`,
+      {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token')).access_token}`,
+        },
+      });
 
       const fetchedData = await response.json();
       onDataFetch(fetchedData);

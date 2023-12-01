@@ -1,13 +1,12 @@
-// Sidebar.js
 import React from 'react';
-import { Box, VStack, Heading, Flex, Text, Button, useColorMode } from '@chakra-ui/react';
+import { Box, VStack, Heading, Button } from '@chakra-ui/react';
 
 const MenuItem = ({ label, isSelected, onClick }) => {
     return (
       <Button
         variant="ghost"
         colorScheme={isSelected ? 'white' : 'white'}
-        bg={isSelected ? 'orange.400' : 'transparent'}
+        bg={isSelected ? 'orange.400' : 'blue'}
         onClick={onClick}
         width="100%"
         textAlign="right"

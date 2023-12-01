@@ -2,7 +2,6 @@ from database import PgDatabase
 from datetime import datetime
 from datetime import datetime
 from uuid6 import uuid7
-import re
 from helpers import *
 
 def insert_access_log(log: str):
@@ -145,6 +144,31 @@ def check_user(username: str, password: str = ''):
         return res
 
 
+def record_user_action(username: str, action: str):
+    with PgDatabase() as db:
+        try :
+            db.cursor.execute(
+                """INSERT INTO userQueryHistory (username, queryDescription, queryTimestamp)
+                        VALUES (%s, %s, %s);"""
+
+            , (username, action, datetime.now().strftime('%y%m%d %H%M%S')))
+
+            db.connection.commit()
+            print("Success", username, action)
+            return "Success"
+        except Exception as e:
+            print(e)
+    
+
+# query 1
+# http://127.0.0.1:8001/query1?start_date=2005-10-20%2022:24:46&end_date=2009-12-20%2022:24:48
+def search_ip(ip: str):
+    with PgDatabase() as db:
+        db.cursor.callproc('findIPLogs', [ip])
+        res = db.cursor.fetchall()
+        return res
+    
+
 # query 1
 # http://127.0.0.1:8001/query1?start_date=2005-10-20%2022:24:46&end_date=2009-12-20%2022:24:48
 def lp_type_ranged(start_date: str, end_date: str):
@@ -255,12 +279,16 @@ def ips_with_1_httpmethod_ranged(start_date: str, end_date: str, http_method: st
 # http://127.0.0.1:8000/query12?start_date=2004-10-20%2022:24:46&end_date=2015-12-20%2022:24:48&http_method1=GET&http_method2=POST
 def ips_with_2_httpmethods_ranged(start_date: str, end_date: str, http_method1: str, http_method2: str):
     with PgDatabase() as db:
-        db.cursor.callproc('query12', [convert_to_timestamp(start_date), 
-                                      convert_to_timestamp(end_date),
-                                      http_method1,
-                                      http_method2])
-        res = db.cursor.fetchall()
-        return res
+        try:
+            db.cursor.callproc('query12', [convert_to_timestamp(start_date), 
+                                        convert_to_timestamp(end_date),
+                                        http_method1,
+                                        http_method2])
+            res = db.cursor.fetchall()
+            print(res)
+            return res
+        except:
+            print("Fail")
 
 
 

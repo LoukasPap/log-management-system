@@ -1,4 +1,3 @@
-// DateForm.js
 import React, { useState } from 'react';
 import { VStack, Input, Button, Text } from '@chakra-ui/react';
 
@@ -8,12 +7,11 @@ const DateForm = ({ day, onDayChange }) => {
 
   return (
     <VStack spacing="4" align="start">
-      <Text fontSize="lg" fontWeight="bold">Day</Text>
+      <Text fontSize="lg" fontWeight="bold">Day (MM/DD/YYYY)</Text>
       <Input
-      type="date"
-      value={day}
-      onChange={(e) => onDayChange(e.target.value)}
-      placeholder="DD-MM-YY"
+        type="date"
+        value={day}
+        onChange={(e) => onDayChange(e.target.value)}
       />
 
     </VStack>

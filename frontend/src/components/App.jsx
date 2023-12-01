@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ChakraProvider, Box, Heading, Button, Text } from '@chakra-ui/react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Box, Heading, Link } from '@chakra-ui/react';
+import { Link as RouterLink, BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginForm from './forms/LoginForm';
 import RegisterForm from './forms/RegisterForm';
 import Menu from './Menu';
@@ -10,6 +10,7 @@ const App = () => {
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  window.myGlobalVariable = "http://localhost:8000/"
 
   const handleLogin = async (token) => {
     setToken(token);
@@ -18,20 +19,22 @@ const App = () => {
       const userInfo = await authService.getUserInfo(token);
       setUser(userInfo);
 
-
     } catch (error) {
       console.error(error.message);
     }
   };
 
-
   return (
       <BrowserRouter>
         <Box p="4">
         {!token ? (
-          <Heading mt="10" mb="3" align="center" as="h1" >
-            Log Management System
-          </Heading>
+          <>
+          <Link as={RouterLink} to="/">
+            <Heading mt="10" mb="3" align="center" as="h1" >
+              📄<u>Log Management System</u>
+            </Heading>
+          </Link>
+          </>
           ) : (null)}
 
         <Routes>

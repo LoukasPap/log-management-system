@@ -1,9 +1,8 @@
-// Form1.js
 import React, { useState } from 'react';
 import { Text, Button, Spinner, Select } from '@chakra-ui/react';
 import TimeRangeForm from './TimeRangeForm';
 
-const Form11 = ({ onDataFetch, whichQuery }) => {
+const Form11 = ({ onDataFetch }) => {
   const [loading, setLoading] = useState(false);
 
   const [startDate, setStartDate] = useState('');
@@ -12,16 +11,21 @@ const Form11 = ({ onDataFetch, whichQuery }) => {
   const [endTime, setEndTime] = useState('');
   
   const [method1, setMethod1] = useState('');
-  const [method2, setMethod2] = useState('');
   
 
   const handleDataFetch = async (data) => {
     setLoading(true)
     
     try {
-      console.log(startDate+" here"+method1+ endDate)
-      // const response = await fetch(`http://127.0.0.1:8001/query11?start_date=`+startDate+`&end_date=`+endDate+`&http_method=`+method1);
-      const response = await fetch(`http://127.0.0.1:8001/query11?start_date=2005-10-20%2022:24:46&end_date=2009-12-20%2022:24:48&http_method=POST`);
+      const formattedStartDate = startDate + " " + startTime
+      const formattedEndDate = endDate + " " + endTime
+
+      const response = await fetch(`${window.myGlobalVariable}query11?start_date=${formattedStartDate}&end_date=${formattedEndDate}&http_method=${method1}`,
+      {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('access_token')).access_token}`,
+        },
+      });
 
       const fetchedData = await response.json();
       onDataFetch(fetchedData);
@@ -39,8 +43,9 @@ const Form11 = ({ onDataFetch, whichQuery }) => {
         🗓️ Find IPs that have issued a particular HTTP method on a particular time range
       </Text>
 
-      <Text mt="5" fontSize="lg" fontWeight="bold">HTTP Method</Text>
-      <Select mt="5"
+      <Text ml="1" mt="5" mb="3" fontSize="lg" fontWeight="bold">HTTP Method</Text>
+      <Select
+        mb="3"
         placeholder="Select 1st HTTP Method"
         value={method1}
         onChange={(e) => setMethod1(e.target.value)}
@@ -57,11 +62,13 @@ const Form11 = ({ onDataFetch, whichQuery }) => {
       </Select>
       
       <TimeRangeForm
-        startDate={startDate}
-        endDate={endDate}
-        onStartDateChange={(date) => setStartDate(date)}
-        onEndDateChange={(date) => setEndDate(date)}
-      />
+          startDate={startDate}
+          endDate={endDate}
+          onStartDateChange={(date) => setStartDate(date)}
+          onEndDateChange={(date) => setEndDate(date)}
+          onStartTimeChange={(date) => setStartTime(date)}
+          onEndTimeChange={(date) => setEndTime(date)}
+        />
       
       <Button mt="5" colorScheme="whatsapp" onClick={handleDataFetch}>
         Fetch {loading && <Spinner ml="3" size="sm" />}

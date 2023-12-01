@@ -1,7 +1,5 @@
-
-// components/LoginForm.jsx
 import React, { useState } from 'react';
-import { Box, Text, Input, Button, VStack, Link } from '@chakra-ui/react';
+import { Text, Input, Button, VStack, Link } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 const LoginForm = ({ onLogin }) => {
@@ -36,8 +34,6 @@ const LoginForm = ({ onLogin }) => {
         
         const token = await response.json();
         
-        // localStorage.setItem('access_token', JSON.stringify(token.access_token));
-        
         localStorage.setItem('access_token', JSON.stringify(token));
         
         onLogin(token);
@@ -52,29 +48,32 @@ const LoginForm = ({ onLogin }) => {
   return (
     <VStack spacing="4">
       <Text fontSize="xl">Login</Text>
+      <Text fontSize="lg" fontWeight="bold">Username</Text>
         <Input
-            maxW="sm"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            mb="2"
+          maxW="sm"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          mb="2"
         />
-        <Input
-            maxW="sm"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            mb="4"
+
+      <Text fontSize="lg" fontWeight="bold">Password</Text>
+      <Input
+          maxW="sm"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          mb="4"
         />
 
       {error != "" ? (
             <Text fontSize="lg" mb="3" color="red" fontWeight="bold">{error}</Text>
         ) : (null)}
 
-        <Button colorScheme="blue" onClick={handleLogin}>
-          Login
-        </Button>
+      <Button colorScheme="blue" onClick={handleLogin}>
+        Login
+      </Button>
       <Text>
         Don't have an account?{' '}
         <Link as={RouterLink} to="/register">

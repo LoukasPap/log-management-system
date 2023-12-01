@@ -1,4 +1,3 @@
-// DataTable.js
 import React, { useEffect, useState } from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td, Button, Text } from '@chakra-ui/react';
 
