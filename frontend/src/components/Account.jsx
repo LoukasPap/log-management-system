@@ -31,6 +31,7 @@ const Account = ({ onDataFetch }) => {
         localStorage.removeItem('access_token')
         localStorage.removeItem('user')
         navigate("/")
+        window.location.reload();
   };
 
     const userInput = {
