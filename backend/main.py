@@ -1,18 +1,26 @@
-from fastapi import FastAPI, Request
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Depends, status, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
+
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+from datetime import datetime, timedelta
 
 from queries import *
 
 
 app = FastAPI()
 
+# JWT Configuration
+SECRET_KEY = "4w6473wKC0ax53VMOWJJJ3P9R2 "  # Replace with a secure secret key
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
 origins = [
     "http://localhost:3000",
     "localhost:3000"
 ]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -21,14 +29,72 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+def create_access_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
 
-@app.get("/")
-async def root():
-    results = get_log_records(5)
-    return {"data" : results}
+
+def get_current_user(token: str = Depends(OAuth2PasswordBearer(tokenUrl="login"))):
+    credentials_exception = HTTPException(
+        status_code=401,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        print("Received token:", token)
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print("Decoded payload:", payload)
+
+        return payload
+    
+    except JWTError as e:
+        print("JWTError:", e)
+        raise credentials_exception
+
+
+@app.get("/me", response_model=dict)
+async def read_users_me(current_user: dict = Depends(get_current_user)):
+    print(current_user)
+    return current_user
+
+
+@app.post("/login")
+async def login(credentials: dict):
+    userExists = check_user(credentials['username'], credentials['password'])
+
+    if userExists == []:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Invalid credentials"
+        )
+    user={
+        "username":userExists[0][0],
+        "password":userExists[0][2],
+        "fullname":userExists[0][1],
+        "address":userExists[0][3],
+        "email":userExists[0][4],
+    }
+    print(user)
+    access_token = create_access_token(data=user)
+    print(access_token)
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@app.post("/register")
+async def register(credentials: dict):
+    user = check_user(credentials['username'])
+    if user:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username already exists"
+        )
+    results = register_user(credentials)
+    return {"token" : results}
 
 
 @app.get("/query1")

@@ -19,7 +19,6 @@ const MenuItem = ({ label, isSelected, onClick }) => {
   };
 
 const Sidebar = ({ onMenuClick }) => {
-  const { colorMode, toggleColorMode } = useColorMode();
 
   const menuItems = [
     { label: 'Query 1', key: 'Query 1' },
@@ -35,6 +34,7 @@ const Sidebar = ({ onMenuClick }) => {
     { label: 'Query 11', key: 'Query 11' },
     { label: 'Query 12', key: 'Query 12' },
     { label: 'Query 13', key: 'Query 13' },
+    { label: 'Account', key: 'Account' },
   ];
 
   const [selectedMenu, setSelectedMenu] = React.useState('');
@@ -48,14 +48,17 @@ const Sidebar = ({ onMenuClick }) => {
       as="nav" pos="fixed" left="0" top="0" h="100%"
       w="150px" bg="blue.500" color="white" p="4" zIndex="1000">
 
-      <VStack spacing="4" align="end">
-        {/* Header inside the Sidebar */}
-        <Heading mb='3' align="right" as="h1" size="md">Log <br/>Management System</Heading>
+
+      <VStack spacing="4" align="center">
+
+        <Heading p="5" align="start" as="h1" size="md">
+          Log Management System
+        </Heading>
 
         {menuItems.map((menuItem) => (
             <MenuItem
+            textAlign="start"
             fontSize="xl"
-            align="right"
             as="h1"
             key={menuItem.key}
             label={menuItem.label}

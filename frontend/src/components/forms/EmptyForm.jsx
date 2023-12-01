@@ -2,14 +2,15 @@
 import React, { useState } from 'react';
 import { Text, Button, Spinner } from '@chakra-ui/react';
 
-const Form1 = ({ onDataFetch, whichQuery }) => {
+const EmptyForm = ({ onDataFetch, whichQuery }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDataFetch = async (data) => {
     setLoading(true);
 
-    
     try {
+      console.log(whichQuery)
+
       const response = await fetch(`http://localhost:8001/query`+whichQuery);
       const fetchedData = await response.json();
 
@@ -25,7 +26,7 @@ const Form1 = ({ onDataFetch, whichQuery }) => {
     <div>
       { whichQuery=="5" ? (
       <Text maxW="md" mt="5" fontSize="xl" color="black">
-        Find the referers (if any) that have led to more than one resources
+        👤 Find the referers (if any) that have led to more than one resources
       </Text>
 
       ) : whichQuery=="6" ? (
@@ -58,4 +59,4 @@ const Form1 = ({ onDataFetch, whichQuery }) => {
   );
 };
 
-export default Form1;
+export default EmptyForm;

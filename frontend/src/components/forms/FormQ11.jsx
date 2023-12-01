@@ -63,7 +63,6 @@ const Form11 = ({ onDataFetch, whichQuery }) => {
         onEndDateChange={(date) => setEndDate(date)}
       />
       
-
       <Button mt="5" colorScheme="whatsapp" onClick={handleDataFetch}>
         Fetch {loading && <Spinner ml="3" size="sm" />}
       </Button>

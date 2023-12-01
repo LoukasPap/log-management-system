@@ -1,6 +1,6 @@
 // DataTable.js
 import React, { useEffect, useState } from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td, Button, Text, Spinner } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Button, Text } from '@chakra-ui/react';
 
 const DataTable = ({ data, currentPage, setCurrentPage  }) => {
   const itemsPerPage = 30;
@@ -8,14 +8,14 @@ const DataTable = ({ data, currentPage, setCurrentPage  }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-    
+
         try {
             if (Array.isArray(data.data) && data.data.length > 0 && typeof data.data[0] === 'object') {
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
 
-            // Paginate the data
-            setPaginatedData(data.data.slice(startIndex, endIndex));
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                setPaginatedData(data.data.slice(startIndex, endIndex));
+
             } else {
             setPaginatedData([]);
             }
@@ -28,14 +28,17 @@ const DataTable = ({ data, currentPage, setCurrentPage  }) => {
     fetchData()
   }, [data, currentPage]);
 
+  const goToFristPage = () => {
+    setCurrentPage(1);  };
+
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);  };
 
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));  };
 
-  // Display an error message if the data is not in the expected format
-  if (!Array.isArray(data.data) || data.data.length === 0 || typeof data.data[0] !== 'object') {
+
+    if (!Array.isArray(data.data) || data.data.length === 0 || typeof data.data[0] !== 'object') {
     return <div></div>;
   }
 
@@ -46,7 +49,10 @@ const DataTable = ({ data, currentPage, setCurrentPage  }) => {
 
   return (
     <div>
-        <Button mt="0" onClick={handlePrevPage} disabled={currentPage === 1}>
+        <Button mt="0" bg="ActiveBorder" color="white" onClick={goToFristPage} >
+            First Page
+        </Button>
+        <Button mt="0" ml="4" onClick={handlePrevPage} disabled={currentPage === 1}>
             Previous
         </Button>
         <Button mt="0" ml="4" onClick={handleNextPage} disabled={paginatedData.length < itemsPerPage}>

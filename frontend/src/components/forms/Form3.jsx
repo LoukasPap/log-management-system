@@ -28,7 +28,7 @@ const Form1 = ({ onDataFetch, which_query }) => {
   return (
     <div>
       <Text maxW="md" mt="5" fontSize="xl" color="black">
-        Find the most common log per source IP for a specific day
+        🎲 Find the most common log per source IP for a specific day
       </Text>
       <br/>
       <DateForm

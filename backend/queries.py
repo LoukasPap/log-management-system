@@ -2,15 +2,44 @@ from database import PgDatabase
 from datetime import datetime
 
 
-def get_log_records(n: int):
+def register_user(creds: dict):
+    print(creds['username'], creds['fullname'], creds['password'], creds['address'], creds['email'])
     with PgDatabase() as db:
-        db.cursor.execute(
-            """
-            SELECT * FROM LogRecord LIMIT %s;
-            """
-        , (str(n), ))
-        print('Works')
-        return db.cursor.fetchall()
+        try :
+            db.cursor.execute(
+                """
+                DO $$ BEGIN
+                    PERFORM register(%s, %s, %s, %s, %s);
+                END $$;
+                """
+            , (creds['username'], creds['fullname'], creds['password'], creds['address'], creds['email']))
+            
+            db.connection.commit()
+            print('Works')
+            return "Success"
+        
+        except Exception:
+            return "Fail"
+
+
+def check_user(username: str, password: str = ''):
+    with PgDatabase() as db:
+        if password != '':
+            db.cursor.execute(
+                """
+                SELECT * FROM dbUser WHERE username=%s AND userPassword=%s;
+                """
+            , (username, password))
+            res = db.cursor.fetchall()
+        else:
+            db.cursor.execute(
+                """
+                SELECT * FROM dbUser WHERE username=%s;
+                """
+            , (username, ))
+            
+            res = db.cursor.fetchall()
+        return res
 
 # query 1
 # http://127.0.0.1:8001/query1?start_date=2005-10-20%2022:24:46&end_date=2009-12-20%2022:24:48
