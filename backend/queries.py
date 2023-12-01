@@ -1,5 +1,108 @@
 from database import PgDatabase
 from datetime import datetime
+from datetime import datetime
+from uuid6 import uuid7
+import re
+from helpers import *
+
+def insert_access_log(log: str):
+    fields = access_to_list(log)
+
+    with PgDatabase() as db:
+        try :
+            current_uuid = str(uuid7())
+
+            insert_query = """INSERT INTO LogRecord (logID, logTimestamp, sourceIP, originFile, logType) 
+                            VALUES (%s, %s, %s, %s, %s);"""
+
+            db.cursor.execute(insert_query, (current_uuid, fields[3], fields[0], 'ACCESS', 'ACCESS'))
+
+            insert_query = """INSERT INTO AccessLog
+                    (logID, remoteName, userID, httpMethod, httpResponseStatus, httpResponseSize, userAgentString) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s);"""
+            db.cursor.execute(insert_query,
+                            (current_uuid,
+                            None if fields[1] == '-' else fields[1],
+                            None if fields[2] == '-' else fields[2],
+                            fields[4], fields[6], (None if fields[7] == '-' else fields[7]),
+                            (None if fields[-1] == '-' else fields[-1])
+                            ))
+
+            insert_query = """INSERT INTO ResourceRequest 
+                            (logID, referer, resource) 
+                            VALUES (%s, %s, %s);"""
+            db.cursor.execute(insert_query, (current_uuid, (None if fields[-2] == '-' else fields[-2]), fields[5]))
+
+            db.connection.commit() 
+            
+            return "Inserted"       
+    
+        except Exception:
+            return "Fail"
+
+
+def insert_datasxceiver_log(log: str):
+    fields = dataxceiver_to_log(log)
+    with PgDatabase() as db:
+        try :
+            current_uuid = str(uuid7())
+
+            insert_query = """INSERT INTO LogRecord (logID, logTimestamp, sourceIP, originFile, logType)
+                           VALUES (%s, %s, %s, %s, %s);"""
+            db.cursor.execute(insert_query, (current_uuid, fields[0], fields[3], 'DATAXCEIVER', fields[1].upper()))
+
+            if (size := int(fields[-1])) != 0:
+                insert_query = """INSERT INTO LogSize (logID, logSize)
+                                VALUES (%s, %s);"""
+                db.cursor.execute(insert_query, (current_uuid, size))
+
+            # DESTINATION
+            insert_query = """INSERT INTO Destination (logID, destinationIP)
+                            VALUES (%s, %s);"""
+            db.cursor.execute(insert_query, (current_uuid, fields[4]))
+
+            # BLOCK
+            insert_query = """INSERT INTO Block (logID, blockID)
+                            VALUES (%s, %s);"""
+            db.cursor.execute(insert_query, (current_uuid, fields[2]))
+
+            db.connection.commit()
+            
+            return "Inserted"       
+    
+        except Exception:
+            return "Fail"
+
+
+def insert_fsnamesystem_log(log: str):
+    fields = fsnamesystem_to_list(log)
+    
+    with PgDatabase() as db:
+        try :
+
+            current_uuid = str(uuid7())
+
+            insert_query = """INSERT INTO LogRecord (logID, logTimestamp, sourceIP, originFile, logType)
+                           VALUES (%s, %s, %s, %s, %s);"""
+
+            db.cursor.execute(insert_query, (current_uuid, fields[0], fields[3], 'FSNAMESYSTEM', fields[1].upper()))
+
+            for d in fields[4].split():
+                insert_query = """INSERT INTO Destination (logID, destinationIP)
+                                VALUES (%s, %s);"""
+
+                db.cursor.execute(insert_query, (current_uuid, d))
+
+            insert_query = """INSERT INTO Block (logID, blockID)
+                            VALUES (%s, %s);"""
+            db.cursor.execute(insert_query, (current_uuid, fields[2]))
+
+            db.connection.commit()
+
+            return "Inserted"       
+
+        except Exception:
+            return "Fail"
 
 
 def register_user(creds: dict):
@@ -40,6 +143,7 @@ def check_user(username: str, password: str = ''):
             
             res = db.cursor.fetchall()
         return res
+
 
 # query 1
 # http://127.0.0.1:8001/query1?start_date=2005-10-20%2022:24:46&end_date=2009-12-20%2022:24:48
@@ -179,3 +283,5 @@ def insertLog():
 def convert_to_timestamp(dt: str):
     datetime_object = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S')
     return str(datetime_object.strftime("%y%m%d %H%M%S"))
+
+

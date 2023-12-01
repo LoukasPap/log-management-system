@@ -36,7 +36,7 @@ const Form11 = ({ onDataFetch, whichQuery }) => {
   return (
     <div>
       <Text maxW="md" mt="5" fontSize="xl" color="black">
-        🖱️ Find IPs that have issued a particular HTTP method on a particular time range
+        🗓️ Find IPs that have issued a particular HTTP method on a particular time range
       </Text>
 
       <Text mt="5" fontSize="lg" fontWeight="bold">HTTP Method</Text>

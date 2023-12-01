@@ -79,9 +79,8 @@ async def login(credentials: dict):
         "address":userExists[0][3],
         "email":userExists[0][4],
     }
-    print(user)
+
     access_token = create_access_token(data=user)
-    print(access_token)
     return {"access_token": access_token, "token_type": "bearer"}
 
 
@@ -95,6 +94,21 @@ async def register(credentials: dict):
         )
     results = register_user(credentials)
     return {"token" : results}
+
+
+@app.post("/insertlog")
+async def insertlog(log: dict):
+    print(log)
+    if (log['type']=="ACCESS"):
+        response = insert_access_log(log["log"])
+
+    elif log['type']=='DATAXCEIVER':
+        response = insert_datasxceiver_log(log["log"])
+
+    else:
+        response = insert_fsnamesystem_log(log["log"])
+
+    return { "response" : response }
 
 
 @app.get("/query1")

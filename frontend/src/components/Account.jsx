@@ -11,6 +11,8 @@ const Account = ({ onDataFetch }) => {
     const [type, setType] = useState('');
     const [log, setLog] = useState('');
 
+    const [result, setResult] = useState('');
+
     const Logout = async () => {
 
     localStorage.removeItem('access_token')
@@ -19,22 +21,30 @@ const Account = ({ onDataFetch }) => {
 
   };
 
-  const AddLog = async (data) => {
-    try {
-        const response = await fetch(`http://localhost:8001/query2?start_date=2002-10-20%2022:24:46&end_date=2013-11-09%2021:20:55&type=ACCESS`,
-        {
+    const userInput = {
+    "type": type,
+    "log": log,
+    }
 
+    const handleInsert = async (data) => {
+        setLoading(true)
+        try {
+            const response = await fetch(`http://localhost:8002/insertlog`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userInput)
+            })
 
-        });
-        // const response = await fetch(`http://127.0.0.1:8000/query2?start=startDate&end=endDate&type=action`);
-        
-        const fetchedData = await response.json();
-        onDataFetch(fetchedData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
+            const fetchedResponse = await response.json();
+            console.log(fetchedResponse.response)
+            setResult(fetchedResponse)
+
+        } catch (error) {
+            console.error('Error fetching response:', error);
+        } finally {
+            setLoading(false);
+        }
   }
 
   return (
@@ -70,15 +80,19 @@ const Account = ({ onDataFetch }) => {
                 />
             </VStack>
             <VStack>
-                <Button bg="ButtonFace" onClick={AddLog}>
+                <Text color={result.response!="Fail" ? "green.500" : "red.500"}>{(result.response!="Fail" ? "Inserted" : "Failed")}</Text>
+                <Button bg="ButtonFace" onClick={handleInsert}>
                     Insert {loading && <Spinner ml="3" size="sm" />}
                 </Button>
+                
             </VStack>
         </HStack>
+
+
     
         <VStack align="start" mt="100">
             <Text mb="3">
-                Or you can...
+                or you can just...
             </Text>
             <Button  color="white" bg="red" onClick={Logout}> Logout </Button>
         </VStack>

@@ -58,7 +58,7 @@ const Form11 = ({ onDataFetch, whichQuery }) => {
       </Select>
       
       <Text mt="5" fontSize="lg" fontWeight="bold">Second HTTP Method</Text>
-      <Select mt="5"
+      <Select mt="5" mb="5"
         placeholder="Select 2nd HTTP Method"
         value={method2}
         onChange={(e) => setMethod2(e.target.value)}

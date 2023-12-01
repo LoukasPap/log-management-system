@@ -20,7 +20,7 @@ const Form1 = ({ onDataFetch, whichQuery }) => {
       const formattedEndDate = endDate+' '+endTime
       
       // const response = await fetch(`http://localhost:8001/query1?start_date=formattedStartDate&end_date=formattedEndDate`);
-      const response = await fetch(`http://localhost:8001/query`+whichQuery+`?start_date=2004-10-20 22:24:46&end_date=2009-12-20 22:24:48`);
+      const response = await fetch(`http://localhost:8000/query`+whichQuery+`?start_date=2004-10-20 22:24:46&end_date=2009-12-20 22:24:48`);
 
       const fetchedData  = await response.json();
       onDataFetch(fetchedData);

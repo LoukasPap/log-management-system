@@ -33,7 +33,7 @@ const Form2 = ({ onDataFetch }) => {
   return (
     <div>
       <Text maxW="md" mt="5" fontSize="xl" color="black">
-        Find the total logs per day for a specific action type and time range ☀️
+        ☀️ Find the total logs per day for a specific action type and time range
       </Text>
 
       <VStack mb="5" spacing="4" align="start">

@@ -16,8 +16,6 @@ const App = () => {
 
     try {
       const userInfo = await authService.getUserInfo(token);
-      
-      console.log(userInfo)
       setUser(userInfo);
 
 
