@@ -203,10 +203,11 @@ async def query7(size: int, current_user: dict = Depends(get_current_user)):
         "user_id" : i[2],
         "timestamp" : i[3],
         "http_method" : i[4],
-        "http_response_status" : i[5],
-        "http_response size" : i[6],
-        "referer" : i[7],
-        "user_agent_string" : i[8],
+        "resource": i[5],
+        "http_response_status" : i[6],
+        "http_response_size" : i[7],
+        "referer" : i[8],
+        "user_agent_string" : i[9],
     } for i in results]
 
     return {"data" : formated_results}
@@ -238,7 +239,7 @@ async def query10(current_user: dict = Depends(get_current_user)):
     record_user_action(current_user['username'], "Query 10")
 
     formated_results = [{"Log":i[0],
-                         "Firefox Version": re.search(r'Firefox/.+', i[1]).group(0)
+                         "Firefox_Version": re.search(r'Firefox/.+', i[1]).group(0)
                          }
                          for i in results]
 
