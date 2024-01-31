@@ -1,6 +1,6 @@
-# Log Management System - DBMS Project 1
+# Log Management System using `PostgreSQL🐘`
 
-This is the first project for the MSc course  __Database Management System (M149)__ of the winter semester. The pronunciation can be found in the _M149-Project01.pdf_.
+This is the first project for the MSc course  __Database Management System (M149)__ of the winter semester. The pronunciation can be found in the _M149-Project01.pdf_. The second project can be found (here)[https://github.com/LoukasPap/log-management-system-mongo].
 
 ## 🛠️ Backend - FastAPI
 Inside the _backend/_ directory:
@@ -42,7 +42,7 @@ $ npm run start
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
-## 🗄️ Database - Postgresql
+## 🗄️ Database - PostgreSQL
 Inside the _/database_ directory:
 
 Almost all the SQL queries are included.
